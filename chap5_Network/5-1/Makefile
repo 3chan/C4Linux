@@ -1,0 +1,10 @@
+PROGRAM=w1
+OBJS=w1.o
+SRCS=$(OBJS:%.o=%.c)
+CFLAGS=-Wall -g
+LDFLAGS=
+LDLIBS=
+$(PROGRAM):$(OBJS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $(PROGRAM) $(OBJS) $(LDLIBS)
+clean:
+	rm $(PROGRAM) $(OBJS)
