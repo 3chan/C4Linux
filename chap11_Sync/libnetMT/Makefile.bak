@@ -1,0 +1,8 @@
+PROGRAM=libnet.a
+OBJS=sock.o token.o log.o jconv.o lockf.o
+SRCS=$(OBJS:%.o=%.c)
+CFLAGS=-g -Wall
+LDFLAGS=
+LDLIBS= -lresolv -lpthread
+$(PROGRAM):$(OBJS)
+	ar r libnet.a $(OBJS)

@@ -1,0 +1,11 @@
+TargetFolderCnt=1
+TargetFolder0=wlSyncTest,./RecvData/
+Port=56001
+RecvTimeout=5
+UseDigest=0
+LogPath=./
+LogLevel=LOG_DEBUG
+StderrOut=1
+VersionFilePath=./wlSyncC.ver
+WorkFilePath=./wlSyncC.work
+DeleteFlag=1

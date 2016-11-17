@@ -1,0 +1,344 @@
+<3086874304>2007/08/10 20:45:09:INFO:ParamLogOut:VERSION_STRING=1.0.0
+<3086874304>2007/08/10 20:45:09:INFO:ParamLogOut:TargetFolderCnt=1
+<3086874304>2007/08/10 20:45:09:INFO:ParamLogOut:TargetFolder0=wlSyncTest,./RecvData/
+<3086874304>2007/08/10 20:45:09:INFO:ParamLogOut:Port=56000
+<3086874304>2007/08/10 20:45:09:INFO:ParamLogOut:RecvTimeout=5
+<3086874304>2007/08/10 20:45:09:INFO:ParamLogOut:UseDigest=0
+<3086874304>2007/08/10 20:45:09:INFO:ParamLogOut:LogPath=./
+<3086874304>2007/08/10 20:45:09:INFO:ParamLogOut:LogLevel=7
+<3086874304>2007/08/10 20:45:09:INFO:ParamLogOut:StderrOut=1
+<3086874304>2007/08/10 20:45:09:INFO:ParamLogOut:VersionFilePath=./wlSyncC.ver
+<3086874304>2007/08/10 20:45:09:INFO:ParamLogOut:WorkFilePath=./wlSyncC.work
+<3086874304>2007/08/10 20:45:09:INFO:ParamLogOut:DeleteFlag=1
+<3086874304>2007/08/10 20:45:09:INFO:sock2.c:ServerSocketNew:listen to :: 56000
+<3086874304>2007/08/10 20:45:09:INFO:sock2.c:ServerSocketNew:listen to 0.0.0.0 56000
+<3086874304>2007/08/10 20:45:09:DEBUG:MakeVersionFile:./wlSyncC.ver
+<3086874304>2007/08/10 20:45:09:INFO:main:wlSyncC:ready
+<3086874304>2007/08/10 20:45:09:DEBUG:AcceptLoop:s_no=2
+<3086874304>2007/08/10 20:45:47:INFO:AcceptLoop:accept(1):192.168.68.128:32795
+<3086874304>2007/08/10 20:45:47:INFO:AcceptLoop:pthread_create:thread_id=24288176
+<24288176>2007/08/10 20:45:47:INFO:RecvLoop:start:acc=6
+<24288176>2007/08/10 20:45:47:DEBUG:RecvLoop:RecvOneLine_2:#Name=wlSyncTest,EUC
+<24288176>2007/08/10 20:45:47:INFO:CheckRecvData:td.acc=6,data=#Name=wlSyncTest,EUC
+<24288176>2007/08/10 20:45:47:INFO:DoName:workfile=./wlSyncC.work/0000000024288176
+<24288176>2007/08/10 20:45:47:DEBUG:DoName:RecvOneLine_2:F:1186745685,4,0,file1.txt
+<24288176>2007/08/10 20:45:47:INFO:DoName:RecvOneLine_2:#End
+<24288176>2007/08/10 20:45:47:DEBUG:SendToRemote:acc=6,data=#OK
+
+<24288176>2007/08/10 20:45:47:DEBUG:SyncData:acc=6
+<24288176>2007/08/10 20:45:47:DEBUG:CheckEraseData:targetNo=0,mptr=b7fff014,mapEnd=b7fff035,code=EUC
+<24288176>2007/08/10 20:45:47:INFO:CheckEraseOneFolder:tpath=./RecvData/,path=,mptr=b7fff014,tend=b7fff030,code=EUC
+<24288176>2007/08/10 20:45:47:ERR:SyncOneFolder:acc=6,targetNo=0,code=EUC,*mptr=b7fff014,mapEnd=b7fff035
+<24288176>2007/08/10 20:45:47:DEBUG:MakeTargetFolder:targetNo=0
+<24288176>2007/08/10 20:45:47:DEBUG:SyncOneFolder:F:1186745685,4,0,file1.txt
+<24288176>2007/08/10 20:45:47:DEBUG:SyncOneFolder_F:acc=6,targetNo=0,code=EUC,stime=1186745685,ssize=4,sdigest=0,path=file1.txt
+<24288176>2007/08/10 20:45:47:DEBUG:SyncOneFolder_F:./RecvData//file1.txt
+<24288176>2007/08/10 20:45:47:INFO:SyncOneFolder_F:./RecvData//file1.txt:stat=-1:Get
+<24288176>2007/08/10 20:45:47:INFO:GetOneFile:acc=6,targetNo=0,code=EUC,path=file1.txt
+<24288176>2007/08/10 20:45:47:DEBUG:GetOneFile:buf=#Get=wlSyncTest,file1.txt
+
+<24288176>2007/08/10 20:45:47:DEBUG:SendToRemote:acc=6,data=#Get=wlSyncTest,file1.txt
+
+<24288176>2007/08/10 20:45:47:DEBUG:GetOneFile:RecvOneLine_2:#Size=4,0
+<24288176>2007/08/10 20:45:47:DEBUG:GetOneFile:fopen:./RecvData//file1.txt
+<24288176>2007/08/10 20:45:47:DEBUG:lockf(lock)=0
+<24288176>2007/08/10 20:45:47:DEBUG:GetOneFile:size=4
+<24288176>2007/08/10 20:45:47:DEBUG:GetOneFile:RecvTimeoutPoll=4
+<24288176>2007/08/10 20:45:47:DEBUG:GetOneFile:RecvOneLine_2:#Size=0,0
+<24288176>2007/08/10 20:45:47:DEBUG:GetOneFile:size=0
+<24288176>2007/08/10 20:45:47:DEBUG:GetOneFile:size=0:end
+<24288176>2007/08/10 20:45:47:DEBUG:lockf(unlock)=0
+<24288176>2007/08/10 20:45:47:DEBUG:GetOneFile:Success
+<24288176>2007/08/10 20:45:47:ERR:SyncOneFolder:normal end
+<24288176>2007/08/10 20:45:47:INFO:RecvLoop:end
+<3086874304>2007/08/10 20:50:06:ERR:ending:sig=2
+<3086874304>2007/08/10 20:51:32:INFO:ParamLogOut:VERSION_STRING=1.0.0
+<3086874304>2007/08/10 20:51:32:INFO:ParamLogOut:TargetFolderCnt=1
+<3086874304>2007/08/10 20:51:32:INFO:ParamLogOut:TargetFolder0=wlSyncTest,./RecvData/
+<3086874304>2007/08/10 20:51:32:INFO:ParamLogOut:Port=56000
+<3086874304>2007/08/10 20:51:32:INFO:ParamLogOut:RecvTimeout=5
+<3086874304>2007/08/10 20:51:32:INFO:ParamLogOut:UseDigest=0
+<3086874304>2007/08/10 20:51:32:INFO:ParamLogOut:LogPath=./
+<3086874304>2007/08/10 20:51:32:INFO:ParamLogOut:LogLevel=7
+<3086874304>2007/08/10 20:51:32:INFO:ParamLogOut:StderrOut=1
+<3086874304>2007/08/10 20:51:32:INFO:ParamLogOut:VersionFilePath=./wlSyncC.ver
+<3086874304>2007/08/10 20:51:32:INFO:ParamLogOut:WorkFilePath=./wlSyncC.work
+<3086874304>2007/08/10 20:51:32:INFO:ParamLogOut:DeleteFlag=1
+<3086874304>2007/08/10 20:51:32:INFO:sock2.c:ServerSocketNew:listen to :: 56000
+<3086874304>2007/08/10 20:51:32:INFO:sock2.c:ServerSocketNew:listen to 0.0.0.0 56000
+<3086874304>2007/08/10 20:51:32:DEBUG:MakeVersionFile:./wlSyncC.ver
+<3086874304>2007/08/10 20:51:32:INFO:main:wlSyncC:ready
+<3086874304>2007/08/10 20:51:32:DEBUG:AcceptLoop:s_no=2
+<3086874304>2007/08/10 20:52:05:INFO:AcceptLoop:accept(1):192.168.68.128:32796
+<3086874304>2007/08/10 20:52:05:INFO:AcceptLoop:pthread_create:thread_id=24288176
+<24288176>2007/08/10 20:52:05:INFO:RecvLoop:start:acc=6
+<24288176>2007/08/10 20:52:05:DEBUG:RecvLoop:RecvOneLine_2:#Name=wlSyncTest,EUC
+<24288176>2007/08/10 20:52:05:INFO:CheckRecvData:td.acc=6,data=#Name=wlSyncTest,EUC
+<24288176>2007/08/10 20:52:05:INFO:DoName:workfile=./wlSyncC.work/0000000024288176
+<24288176>2007/08/10 20:52:05:DEBUG:DoName:RecvOneLine_2:F:1186745685,4,0,file1.txt
+<24288176>2007/08/10 20:52:05:INFO:DoName:RecvOneLine_2:#End
+<24288176>2007/08/10 20:52:05:DEBUG:SendToRemote:acc=6,data=#OK
+
+<24288176>2007/08/10 20:52:05:DEBUG:SyncData:acc=6
+<24288176>2007/08/10 20:52:05:DEBUG:CheckEraseData:targetNo=0,mptr=b7fff014,mapEnd=b7fff035,code=EUC
+<24288176>2007/08/10 20:52:05:INFO:CheckEraseOneFolder:tpath=./RecvData/,path=,mptr=b7fff014,tend=b7fff030,code=EUC
+<24288176>2007/08/10 20:52:05:INFO:CheckEraseOneFolder:fullpath=./RecvData/file1.txt
+<24288176>2007/08/10 20:52:05:DEBUG:SearchOne:d_f=F,spath=file1.txt,mptr=b7fff014,tend=b7fff030,code=EUC
+<24288176>2007/08/10 20:52:05:DEBUG:SearchOne:spath=file1.txt
+<24288176>2007/08/10 20:52:05:DEBUG:SearchOne:file1.txt:file1.txt
+<24288176>2007/08/10 20:52:05:DEBUG:SearchOne:F,file1.txt:1
+<24288176>2007/08/10 20:52:05:ERR:SyncOneFolder:acc=6,targetNo=0,code=EUC,*mptr=b7fff014,mapEnd=b7fff035
+<24288176>2007/08/10 20:52:05:DEBUG:MakeTargetFolder:targetNo=0
+<24288176>2007/08/10 20:52:05:DEBUG:SyncOneFolder:F:1186745685,4,0,file1.txt
+<24288176>2007/08/10 20:52:05:DEBUG:SyncOneFolder_F:acc=6,targetNo=0,code=EUC,stime=1186745685,ssize=4,sdigest=0,path=file1.txt
+<24288176>2007/08/10 20:52:05:DEBUG:SyncOneFolder_F:./RecvData//file1.txt
+<24288176>2007/08/10 20:52:05:INFO:SyncOneFolder_F:./RecvData//file1.txt:exists
+<24288176>2007/08/10 20:52:05:ERR:SyncOneFolder:normal end
+<24288176>2007/08/10 20:52:05:INFO:RecvLoop:end
+<3086874304>2007/08/10 20:57:18:INFO:AcceptLoop:accept(1):192.168.68.128:32797
+<3086874304>2007/08/10 20:57:18:INFO:AcceptLoop:pthread_create:thread_id=24288176
+<24288176>2007/08/10 20:57:18:INFO:RecvLoop:start:acc=6
+<24288176>2007/08/10 20:57:18:DEBUG:RecvLoop:RecvOneLine_2:#Name=wlSyncTest,EUC
+<24288176>2007/08/10 20:57:18:INFO:CheckRecvData:td.acc=6,data=#Name=wlSyncTest,EUC
+<24288176>2007/08/10 20:57:18:INFO:DoName:workfile=./wlSyncC.work/0000000024288176
+<24288176>2007/08/10 20:57:18:DEBUG:DoName:RecvOneLine_2:F:1186746992,8,0,file1.txt
+<24288176>2007/08/10 20:57:18:INFO:DoName:RecvOneLine_2:#End
+<24288176>2007/08/10 20:57:18:DEBUG:SendToRemote:acc=6,data=#OK
+
+<24288176>2007/08/10 20:57:18:DEBUG:SyncData:acc=6
+<24288176>2007/08/10 20:57:18:DEBUG:CheckEraseData:targetNo=0,mptr=b7fff014,mapEnd=b7fff035,code=EUC
+<24288176>2007/08/10 20:57:18:INFO:CheckEraseOneFolder:tpath=./RecvData/,path=,mptr=b7fff014,tend=b7fff030,code=EUC
+<24288176>2007/08/10 20:57:18:INFO:CheckEraseOneFolder:fullpath=./RecvData/file1.txt
+<24288176>2007/08/10 20:57:18:DEBUG:SearchOne:d_f=F,spath=file1.txt,mptr=b7fff014,tend=b7fff030,code=EUC
+<24288176>2007/08/10 20:57:18:DEBUG:SearchOne:spath=file1.txt
+<24288176>2007/08/10 20:57:18:DEBUG:SearchOne:file1.txt:file1.txt
+<24288176>2007/08/10 20:57:18:DEBUG:SearchOne:F,file1.txt:1
+<24288176>2007/08/10 20:57:18:ERR:SyncOneFolder:acc=6,targetNo=0,code=EUC,*mptr=b7fff014,mapEnd=b7fff035
+<24288176>2007/08/10 20:57:18:DEBUG:MakeTargetFolder:targetNo=0
+<24288176>2007/08/10 20:57:18:DEBUG:SyncOneFolder:F:1186746992,8,0,file1.txt
+<24288176>2007/08/10 20:57:18:DEBUG:SyncOneFolder_F:acc=6,targetNo=0,code=EUC,stime=1186746992,ssize=8,sdigest=0,path=file1.txt
+<24288176>2007/08/10 20:57:18:DEBUG:SyncOneFolder_F:./RecvData//file1.txt
+<24288176>2007/08/10 20:57:18:INFO:SyncOneFolder_F:./RecvData//file1.txt:st.st_size(4)!=size(8):Get
+<24288176>2007/08/10 20:57:18:INFO:GetOneFile:acc=6,targetNo=0,code=EUC,path=file1.txt
+<24288176>2007/08/10 20:57:18:DEBUG:GetOneFile:buf=#Get=wlSyncTest,file1.txt
+
+<24288176>2007/08/10 20:57:18:DEBUG:SendToRemote:acc=6,data=#Get=wlSyncTest,file1.txt
+
+<24288176>2007/08/10 20:57:18:DEBUG:GetOneFile:RecvOneLine_2:#Size=8,0
+<24288176>2007/08/10 20:57:18:DEBUG:GetOneFile:fopen:./RecvData//file1.txt
+<24288176>2007/08/10 20:57:18:DEBUG:lockf(lock)=0
+<24288176>2007/08/10 20:57:18:DEBUG:GetOneFile:size=8
+<24288176>2007/08/10 20:57:18:DEBUG:GetOneFile:RecvTimeoutPoll=8
+<24288176>2007/08/10 20:57:18:DEBUG:GetOneFile:RecvOneLine_2:#Size=0,0
+<24288176>2007/08/10 20:57:18:DEBUG:GetOneFile:size=0
+<24288176>2007/08/10 20:57:18:DEBUG:GetOneFile:size=0:end
+<24288176>2007/08/10 20:57:18:DEBUG:lockf(unlock)=0
+<24288176>2007/08/10 20:57:18:DEBUG:GetOneFile:Success
+<24288176>2007/08/10 20:57:18:ERR:SyncOneFolder:normal end
+<24288176>2007/08/10 20:57:18:INFO:RecvLoop:end
+<3086874304>2007/08/10 21:00:34:INFO:AcceptLoop:accept(1):192.168.68.128:32798
+<3086874304>2007/08/10 21:00:34:INFO:AcceptLoop:pthread_create:thread_id=24288176
+<24288176>2007/08/10 21:00:34:INFO:RecvLoop:start:acc=6
+<24288176>2007/08/10 21:00:34:DEBUG:RecvLoop:RecvOneLine_2:#Name=wlSyncTest,EUC
+<24288176>2007/08/10 21:00:34:INFO:CheckRecvData:td.acc=6,data=#Name=wlSyncTest,EUC
+<24288176>2007/08/10 21:00:34:INFO:DoName:workfile=./wlSyncC.work/0000000024288176
+<24288176>2007/08/10 21:00:34:DEBUG:DoName:RecvOneLine_2:F:1186747158,4,0,file2.txt
+<24288176>2007/08/10 21:00:34:INFO:DoName:RecvOneLine_2:#End
+<24288176>2007/08/10 21:00:34:DEBUG:SendToRemote:acc=6,data=#OK
+
+<24288176>2007/08/10 21:00:34:DEBUG:SyncData:acc=6
+<24288176>2007/08/10 21:00:34:DEBUG:CheckEraseData:targetNo=0,mptr=b7fff014,mapEnd=b7fff035,code=EUC
+<24288176>2007/08/10 21:00:34:INFO:CheckEraseOneFolder:tpath=./RecvData/,path=,mptr=b7fff014,tend=b7fff030,code=EUC
+<24288176>2007/08/10 21:00:34:INFO:CheckEraseOneFolder:fullpath=./RecvData/file1.txt
+<24288176>2007/08/10 21:00:34:DEBUG:SearchOne:d_f=F,spath=file1.txt,mptr=b7fff014,tend=b7fff030,code=EUC
+<24288176>2007/08/10 21:00:34:DEBUG:SearchOne:spath=file1.txt
+<24288176>2007/08/10 21:00:34:DEBUG:SearchOne:file2.txt:file1.txt
+<24288176>2007/08/10 21:00:34:DEBUG:SearchOne:F,file1.txt:0
+<24288176>2007/08/10 21:00:34:DEBUG:DoDelete:fullpath=./RecvData/file1.txt
+<24288176>2007/08/10 21:00:34:INFO:DoDelete:rm -rf './RecvData/file1.txt'
+<24288176>2007/08/10 21:00:34:ERR:SyncOneFolder:acc=6,targetNo=0,code=EUC,*mptr=b7fff014,mapEnd=b7fff035
+<24288176>2007/08/10 21:00:34:DEBUG:MakeTargetFolder:targetNo=0
+<24288176>2007/08/10 21:00:34:DEBUG:SyncOneFolder:F:1186747158,4,0,file2.txt
+<24288176>2007/08/10 21:00:34:DEBUG:SyncOneFolder_F:acc=6,targetNo=0,code=EUC,stime=1186747158,ssize=4,sdigest=0,path=file2.txt
+<24288176>2007/08/10 21:00:34:DEBUG:SyncOneFolder_F:./RecvData//file2.txt
+<24288176>2007/08/10 21:00:34:INFO:SyncOneFolder_F:./RecvData//file2.txt:stat=-1:Get
+<24288176>2007/08/10 21:00:34:INFO:GetOneFile:acc=6,targetNo=0,code=EUC,path=file2.txt
+<24288176>2007/08/10 21:00:34:DEBUG:GetOneFile:buf=#Get=wlSyncTest,file2.txt
+
+<24288176>2007/08/10 21:00:34:DEBUG:SendToRemote:acc=6,data=#Get=wlSyncTest,file2.txt
+
+<24288176>2007/08/10 21:00:34:DEBUG:GetOneFile:RecvOneLine_2:#Size=4,0
+<24288176>2007/08/10 21:00:34:DEBUG:GetOneFile:fopen:./RecvData//file2.txt
+<24288176>2007/08/10 21:00:34:DEBUG:lockf(lock)=0
+<24288176>2007/08/10 21:00:34:DEBUG:GetOneFile:size=4
+<24288176>2007/08/10 21:00:34:DEBUG:GetOneFile:RecvTimeoutPoll=4
+<24288176>2007/08/10 21:00:34:DEBUG:GetOneFile:RecvOneLine_2:#Size=0,0
+<24288176>2007/08/10 21:00:34:DEBUG:GetOneFile:size=0
+<24288176>2007/08/10 21:00:34:DEBUG:GetOneFile:size=0:end
+<24288176>2007/08/10 21:00:34:DEBUG:lockf(unlock)=0
+<24288176>2007/08/10 21:00:34:DEBUG:GetOneFile:Success
+<24288176>2007/08/10 21:00:34:ERR:SyncOneFolder:normal end
+<24288176>2007/08/10 21:00:34:INFO:RecvLoop:end
+<3086874304>2007/08/20 16:20:11:INFO:ParamLogOut:VERSION_STRING=1.0.0
+<3086874304>2007/08/20 16:20:11:INFO:ParamLogOut:TargetFolderCnt=1
+<3086874304>2007/08/20 16:20:11:INFO:ParamLogOut:TargetFolder0=wlSyncTest,./RecvData/
+<3086874304>2007/08/20 16:20:11:INFO:ParamLogOut:Port=56000
+<3086874304>2007/08/20 16:20:11:INFO:ParamLogOut:RecvTimeout=5
+<3086874304>2007/08/20 16:20:11:INFO:ParamLogOut:UseDigest=0
+<3086874304>2007/08/20 16:20:11:INFO:ParamLogOut:LogPath=./
+<3086874304>2007/08/20 16:20:11:INFO:ParamLogOut:LogLevel=7
+<3086874304>2007/08/20 16:20:11:INFO:ParamLogOut:StderrOut=1
+<3086874304>2007/08/20 16:20:11:INFO:ParamLogOut:VersionFilePath=./wlSyncC.ver
+<3086874304>2007/08/20 16:20:11:INFO:ParamLogOut:WorkFilePath=./wlSyncC.work
+<3086874304>2007/08/20 16:20:11:INFO:ParamLogOut:DeleteFlag=1
+<3086874304>2007/08/20 16:20:11:INFO:sock2.c:ServerSocketNew:listen to :: 56000
+<3086874304>2007/08/20 16:20:11:INFO:sock2.c:ServerSocketNew:listen to 0.0.0.0 56000
+<3086874304>2007/08/20 16:20:11:DEBUG:MakeVersionFile:./wlSyncC.ver
+<3086874304>2007/08/20 16:20:11:INFO:main:wlSyncC:ready
+<3086874304>2007/08/20 16:20:11:DEBUG:AcceptLoop:s_no=2
+<3086874304>2007/08/20 16:20:20:ERR:endingFunc:sig=2
+<3086874304>2007/08/20 16:20:25:INFO:ParamLogOut:VERSION_STRING=1.0.0
+<3086874304>2007/08/20 16:20:25:INFO:ParamLogOut:TargetFolderCnt=1
+<3086874304>2007/08/20 16:20:25:INFO:ParamLogOut:TargetFolder0=wlSyncTest,./RecvData/
+<3086874304>2007/08/20 16:20:25:INFO:ParamLogOut:Port=56000
+<3086874304>2007/08/20 16:20:25:INFO:ParamLogOut:RecvTimeout=5
+<3086874304>2007/08/20 16:20:25:INFO:ParamLogOut:UseDigest=0
+<3086874304>2007/08/20 16:20:25:INFO:ParamLogOut:LogPath=./
+<3086874304>2007/08/20 16:20:25:INFO:ParamLogOut:LogLevel=7
+<3086874304>2007/08/20 16:20:25:INFO:ParamLogOut:StderrOut=1
+<3086874304>2007/08/20 16:20:25:INFO:ParamLogOut:VersionFilePath=./wlSyncC.ver
+<3086874304>2007/08/20 16:20:25:INFO:ParamLogOut:WorkFilePath=./wlSyncC.work
+<3086874304>2007/08/20 16:20:25:INFO:ParamLogOut:DeleteFlag=1
+<3086874304>2007/08/20 16:20:25:INFO:sock2.c:ServerSocketNew:listen to :: 56000
+<3086874304>2007/08/20 16:20:25:INFO:sock2.c:ServerSocketNew:listen to 0.0.0.0 56000
+<3086874304>2007/08/20 16:20:25:DEBUG:MakeVersionFile:./wlSyncC.ver
+<3086874304>2007/08/20 16:20:25:INFO:main:wlSyncC:ready
+<3086874304>2007/08/20 16:20:25:DEBUG:AcceptLoop:s_no=2
+<3086874304>2007/08/20 16:20:27:ERR:endingFunc:sig=2
+<3086874304>2007/08/20 16:20:29:INFO:ParamLogOut:VERSION_STRING=1.0.0
+<3086874304>2007/08/20 16:20:29:INFO:ParamLogOut:TargetFolderCnt=1
+<3086874304>2007/08/20 16:20:29:INFO:ParamLogOut:TargetFolder0=wlSyncTest,./RecvData/
+<3086874304>2007/08/20 16:20:29:INFO:ParamLogOut:Port=56000
+<3086874304>2007/08/20 16:20:29:INFO:ParamLogOut:RecvTimeout=5
+<3086874304>2007/08/20 16:20:29:INFO:ParamLogOut:UseDigest=0
+<3086874304>2007/08/20 16:20:29:INFO:ParamLogOut:LogPath=./
+<3086874304>2007/08/20 16:20:29:INFO:ParamLogOut:LogLevel=7
+<3086874304>2007/08/20 16:20:29:INFO:ParamLogOut:StderrOut=1
+<3086874304>2007/08/20 16:20:29:INFO:ParamLogOut:VersionFilePath=./wlSyncC.ver
+<3086874304>2007/08/20 16:20:29:INFO:ParamLogOut:WorkFilePath=./wlSyncC.work
+<3086874304>2007/08/20 16:20:29:INFO:ParamLogOut:DeleteFlag=1
+<3086874304>2007/08/20 16:20:29:INFO:sock2.c:ServerSocketNew:listen to :: 56000
+<3086874304>2007/08/20 16:20:29:INFO:sock2.c:ServerSocketNew:listen to 0.0.0.0 56000
+<3086874304>2007/08/20 16:20:29:DEBUG:MakeVersionFile:./wlSyncC.ver
+<3086874304>2007/08/20 16:20:29:INFO:main:wlSyncC:ready
+<3086874304>2007/08/20 16:20:29:DEBUG:AcceptLoop:s_no=2
+<3086874304>2007/08/20 16:20:31:INFO:AcceptLoop:accept(1):192.168.68.128:33336
+<3086874304>2007/08/20 16:20:31:INFO:AcceptLoop:pthread_create:thread_id=24288176
+<24288176>2007/08/20 16:20:31:INFO:RecvLoop:start:acc=6
+<24288176>2007/08/20 16:20:31:DEBUG:RecvLoop:RecvOneLine_2:#Name=wlSyncTest,EUC
+<24288176>2007/08/20 16:20:31:INFO:CheckRecvData:td.acc=6,data=#Name=wlSyncTest,EUC
+<24288176>2007/08/20 16:20:31:INFO:DoName:workfile=./wlSyncC.work/0000000024288176
+<24288176>2007/08/20 16:20:31:DEBUG:DoName:RecvOneLine_2:F:1186747158,4,0,file2.txt
+<24288176>2007/08/20 16:20:31:INFO:DoName:RecvOneLine_2:#End
+<24288176>2007/08/20 16:20:31:DEBUG:SendToRemote:acc=6,data=#OK
+
+<24288176>2007/08/20 16:20:31:DEBUG:SyncData:acc=6
+<24288176>2007/08/20 16:20:31:DEBUG:CheckEraseData:targetNo=0,mptr=b7fff014,mapEnd=b7fff035,code=EUC
+<24288176>2007/08/20 16:20:31:INFO:CheckEraseOneFolder:tpath=./RecvData/,path=,mptr=b7fff014,tend=b7fff030,code=EUC
+<24288176>2007/08/20 16:20:31:INFO:CheckEraseOneFolder:fullpath=./RecvData/file2.txt
+<24288176>2007/08/20 16:20:31:DEBUG:SearchOne:d_f=F,spath=file2.txt,mptr=b7fff014,tend=b7fff030,code=EUC
+<24288176>2007/08/20 16:20:31:DEBUG:SearchOne:spath=file2.txt
+<24288176>2007/08/20 16:20:31:DEBUG:SearchOne:file2.txt:file2.txt
+<24288176>2007/08/20 16:20:31:DEBUG:SearchOne:F,file2.txt:1
+<24288176>2007/08/20 16:20:31:ERR:SyncOneFolder:acc=6,targetNo=0,code=EUC,*mptr=b7fff014,mapEnd=b7fff035
+<24288176>2007/08/20 16:20:31:DEBUG:MakeTargetFolder:targetNo=0
+<24288176>2007/08/20 16:20:31:DEBUG:SyncOneFolder:F:1186747158,4,0,file2.txt
+<24288176>2007/08/20 16:20:31:DEBUG:SyncOneFolder_F:acc=6,targetNo=0,code=EUC,stime=1186747158,ssize=4,sdigest=0,path=file2.txt
+<24288176>2007/08/20 16:20:31:DEBUG:SyncOneFolder_F:./RecvData//file2.txt
+<24288176>2007/08/20 16:20:31:INFO:SyncOneFolder_F:./RecvData//file2.txt:exists
+<24288176>2007/08/20 16:20:31:ERR:SyncOneFolder:normal end
+<24288176>2007/08/20 16:20:31:INFO:RecvLoop:end
+<3086874304>2007/08/20 16:20:36:INFO:AcceptLoop:accept(1):192.168.68.128:33337
+<3086874304>2007/08/20 16:20:36:INFO:AcceptLoop:pthread_create:thread_id=24288176
+<24288176>2007/08/20 16:20:36:INFO:RecvLoop:start:acc=6
+<24288176>2007/08/20 16:20:36:DEBUG:RecvLoop:RecvOneLine_2:#Name=wlSyncTest,EUC
+<24288176>2007/08/20 16:20:36:INFO:CheckRecvData:td.acc=6,data=#Name=wlSyncTest,EUC
+<24288176>2007/08/20 16:20:36:INFO:DoName:workfile=./wlSyncC.work/0000000024288176
+<24288176>2007/08/20 16:20:36:DEBUG:DoName:RecvOneLine_2:F:1186747158,4,0,file2.txt
+<24288176>2007/08/20 16:20:36:INFO:DoName:RecvOneLine_2:#End
+<24288176>2007/08/20 16:20:36:DEBUG:SendToRemote:acc=6,data=#OK
+
+<24288176>2007/08/20 16:20:36:DEBUG:SyncData:acc=6
+<24288176>2007/08/20 16:20:36:DEBUG:CheckEraseData:targetNo=0,mptr=b7fff014,mapEnd=b7fff035,code=EUC
+<24288176>2007/08/20 16:20:36:INFO:CheckEraseOneFolder:tpath=./RecvData/,path=,mptr=b7fff014,tend=b7fff030,code=EUC
+<24288176>2007/08/20 16:20:36:INFO:CheckEraseOneFolder:fullpath=./RecvData/file2.txt
+<24288176>2007/08/20 16:20:36:DEBUG:SearchOne:d_f=F,spath=file2.txt,mptr=b7fff014,tend=b7fff030,code=EUC
+<24288176>2007/08/20 16:20:36:DEBUG:SearchOne:spath=file2.txt
+<24288176>2007/08/20 16:20:36:DEBUG:SearchOne:file2.txt:file2.txt
+<24288176>2007/08/20 16:20:36:DEBUG:SearchOne:F,file2.txt:1
+<24288176>2007/08/20 16:20:36:ERR:SyncOneFolder:acc=6,targetNo=0,code=EUC,*mptr=b7fff014,mapEnd=b7fff035
+<24288176>2007/08/20 16:20:36:DEBUG:MakeTargetFolder:targetNo=0
+<24288176>2007/08/20 16:20:36:DEBUG:SyncOneFolder:F:1186747158,4,0,file2.txt
+<24288176>2007/08/20 16:20:36:DEBUG:SyncOneFolder_F:acc=6,targetNo=0,code=EUC,stime=1186747158,ssize=4,sdigest=0,path=file2.txt
+<24288176>2007/08/20 16:20:36:DEBUG:SyncOneFolder_F:./RecvData//file2.txt
+<24288176>2007/08/20 16:20:36:INFO:SyncOneFolder_F:./RecvData//file2.txt:exists
+<24288176>2007/08/20 16:20:36:ERR:SyncOneFolder:normal end
+<24288176>2007/08/20 16:20:36:INFO:RecvLoop:end
+<3086874304>2007/08/20 16:20:55:INFO:AcceptLoop:accept(1):192.168.68.128:33338
+<3086874304>2007/08/20 16:20:55:INFO:AcceptLoop:pthread_create:thread_id=24288176
+<24288176>2007/08/20 16:20:55:INFO:RecvLoop:start:acc=6
+<24288176>2007/08/20 16:20:55:DEBUG:RecvLoop:RecvOneLine_2:#Name=wlSyncTest,EUC
+<24288176>2007/08/20 16:20:55:INFO:CheckRecvData:td.acc=6,data=#Name=wlSyncTest,EUC
+<24288176>2007/08/20 16:20:55:INFO:DoName:workfile=./wlSyncC.work/0000000024288176
+<24288176>2007/08/20 16:20:55:DEBUG:DoName:RecvOneLine_2:F:1186747158,4,0,file2.txt
+<24288176>2007/08/20 16:20:55:INFO:DoName:RecvOneLine_2:#End
+<24288176>2007/08/20 16:20:55:DEBUG:SendToRemote:acc=6,data=#OK
+
+<24288176>2007/08/20 16:20:55:DEBUG:SyncData:acc=6
+<24288176>2007/08/20 16:20:55:DEBUG:CheckEraseData:targetNo=0,mptr=b7fff014,mapEnd=b7fff035,code=EUC
+<24288176>2007/08/20 16:20:55:INFO:CheckEraseOneFolder:tpath=./RecvData/,path=,mptr=b7fff014,tend=b7fff030,code=EUC
+<24288176>2007/08/20 16:20:55:INFO:CheckEraseOneFolder:fullpath=./RecvData/file2.txt
+<24288176>2007/08/20 16:20:55:DEBUG:SearchOne:d_f=F,spath=file2.txt,mptr=b7fff014,tend=b7fff030,code=EUC
+<24288176>2007/08/20 16:20:55:DEBUG:SearchOne:spath=file2.txt
+<24288176>2007/08/20 16:20:55:DEBUG:SearchOne:file2.txt:file2.txt
+<24288176>2007/08/20 16:20:55:DEBUG:SearchOne:F,file2.txt:1
+<24288176>2007/08/20 16:20:55:ERR:SyncOneFolder:acc=6,targetNo=0,code=EUC,*mptr=b7fff014,mapEnd=b7fff035
+<24288176>2007/08/20 16:20:55:DEBUG:MakeTargetFolder:targetNo=0
+<24288176>2007/08/20 16:20:55:DEBUG:SyncOneFolder:F:1186747158,4,0,file2.txt
+<24288176>2007/08/20 16:20:55:DEBUG:SyncOneFolder_F:acc=6,targetNo=0,code=EUC,stime=1186747158,ssize=4,sdigest=0,path=file2.txt
+<24288176>2007/08/20 16:20:55:DEBUG:SyncOneFolder_F:./RecvData//file2.txt
+<24288176>2007/08/20 16:20:55:INFO:SyncOneFolder_F:./RecvData//file2.txt:exists
+<24288176>2007/08/20 16:20:55:ERR:SyncOneFolder:normal end
+<24288176>2007/08/20 16:20:55:INFO:RecvLoop:end
+<3086874304>2007/08/20 16:21:27:ERR:endingFunc:sig=2
+<16384>2007/08/28 13:21:14:INFO:ParamLogOut:VERSION_STRING=1.0.0
+<16384>2007/08/28 13:21:14:INFO:ParamLogOut:TargetFolderCnt=1
+<16384>2007/08/28 13:21:14:INFO:ParamLogOut:TargetFolder0=wlSyncTest,./RecvData/
+<16384>2007/08/28 13:21:14:INFO:ParamLogOut:Port=56000
+<16384>2007/08/28 13:21:14:INFO:ParamLogOut:RecvTimeout=5
+<16384>2007/08/28 13:21:14:INFO:ParamLogOut:UseDigest=0
+<16384>2007/08/28 13:21:14:INFO:ParamLogOut:LogPath=./
+<16384>2007/08/28 13:21:14:INFO:ParamLogOut:LogLevel=7
+<16384>2007/08/28 13:21:14:INFO:ParamLogOut:StderrOut=1
+<16384>2007/08/28 13:21:14:INFO:ParamLogOut:VersionFilePath=./wlSyncC.ver
+<16384>2007/08/28 13:21:14:INFO:ParamLogOut:WorkFilePath=./wlSyncC.work
+<16384>2007/08/28 13:21:14:INFO:ParamLogOut:DeleteFlag=1
+<16384>2007/08/28 13:21:14:ERR:sock2.c:ServerSocketNew:no socket to listen to
+<16384>2007/08/28 13:21:14:ERR:main:ServerSocketNew(56000):error
+<16384>2007/08/28 13:21:45:INFO:ParamLogOut:VERSION_STRING=1.0.0
+<16384>2007/08/28 13:21:45:INFO:ParamLogOut:TargetFolderCnt=1
+<16384>2007/08/28 13:21:45:INFO:ParamLogOut:TargetFolder0=wlSyncTest,./RecvData/
+<16384>2007/08/28 13:21:45:INFO:ParamLogOut:Port=56001
+<16384>2007/08/28 13:21:45:INFO:ParamLogOut:RecvTimeout=5
+<16384>2007/08/28 13:21:45:INFO:ParamLogOut:UseDigest=0
+<16384>2007/08/28 13:21:45:INFO:ParamLogOut:LogPath=./
+<16384>2007/08/28 13:21:45:INFO:ParamLogOut:LogLevel=7
+<16384>2007/08/28 13:21:45:INFO:ParamLogOut:StderrOut=1
+<16384>2007/08/28 13:21:45:INFO:ParamLogOut:VersionFilePath=./wlSyncC.ver
+<16384>2007/08/28 13:21:45:INFO:ParamLogOut:WorkFilePath=./wlSyncC.work
+<16384>2007/08/28 13:21:45:INFO:ParamLogOut:DeleteFlag=1
+<16384>2007/08/28 13:21:45:INFO:sock2.c:ServerSocketNew:listen to 0.0.0.0 56001
+<16384>2007/08/28 13:21:45:DEBUG:MakeVersionFile:./wlSyncC.ver
+<16384>2007/08/28 13:21:45:INFO:main:wlSyncC:ready
+<16384>2007/08/28 13:21:45:DEBUG:AcceptLoop:s_no=1
+<16384>2007/08/28 13:22:10:ERR:endingFunc:sig=2
