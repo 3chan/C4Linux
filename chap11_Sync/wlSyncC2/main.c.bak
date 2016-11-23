@@ -18,7 +18,6 @@
 #include    <dirent.h>
 #include    <utime.h>
 #include    <pthread.h>
-#include    <ipc.h>  // added
 #include    "sock.h"
 #include    "token.h"
 #include    "jconv.h"
@@ -75,10 +74,6 @@ int SyncOneFolder_F(int acc,int targetNo,char *code,char *stime,char *ssize,char
 int GetOneFile(int acc,int targetNo,char *code,char *path,unsigned long timestamp);
 int CleanFilename(char *name);
 
-// added
-void *ipc_listen(void *arg);
-void NoopHandler(MSG_INSTANCE ref, void *data, void *dummy);
-
 void ending(int sig)
 {
 	SigEnd=sig;
@@ -95,25 +90,6 @@ int main(int argc,char *argv[])
 {
 int	s[SOCK_NO];
 int	s_no,ret,i;
-
-// added
-char noop[10];
-
-        // added
-        /* Connect to Central Server */
-        IPC_connect("wlSyncC"); 
-
-	// added
-	/* Define Message */
-	IPC_defineMsg("NOOP", IPC_VARIABLE_LENGTH, "[char: 10]");
-	//	IPC_subscribeData("NOOP", NoopHandler, NULL);
-
-        // added
-        /* Create a thread for IPC_listen */
-        pthread_t thread_listen;
-	char *message = "Thread for IPC_listen";
-	pthread_create(&thread_listen, NULL, ipc_listen, (void*) message);  // 第4引数は必須 or not??
-
 
 	if(argc>1&&strcmp(argv[1],"-d")==0){
 		daemon(1,0);
@@ -162,10 +138,6 @@ char noop[10];
 		close(s[i]);
 	}
 
-	// added
-	IPC_disconnect();
-	pthread_join(thread_listen, NULL);
-
 	return(0);
 }
 
@@ -206,8 +178,7 @@ int MakeWorkFolder()
 
 int AcceptLoop(int s[],int s_no)
 {
-int	acc;
-socklen_t	fromlen;
+int	acc,fromlen;
 struct sockaddr_storage	from;
 pthread_t	thread_id;
 struct pollfd	targets[SOCK_NO];
@@ -222,12 +193,6 @@ int	i,nready;
 	}
 
 	while(1){
-	  // added
-	  char noop[10];
-	  // added
-	  // Send Noop
-	  sprintf(noop, "#Noop");
-	  IPC_publishData("NOOP", noop);
 		if(SigEnd){
 			endingFunc(SigEnd);
 			SigEnd=0;
@@ -510,13 +475,6 @@ char	*buf;
 	Syslog(LOG_INFO,"SendKeepAlive:Send \"#Noop\"\n");
 
 	SendToRemote(acc,"#Noop\r\n");
-
-	// added
-	// Send Noop
-	//char noop[10];
-	//sprintf(noop, "#Noop");
-	//IPC_publishData("NOOP", noop);
-
 	if(RecvOneLine_2(acc,&buf,0)<=0){
 		Syslog(LOG_ERR,"SendKeepAlive:RecvOneLine_2:error or closed\n");
 		return(-1);
@@ -534,13 +492,6 @@ char	*buf;
 		return(0);
 	}
 }
-
-// added
-void NoopHandler(MSG_INSTANCE ref, void *data, void *dummy) {
-  char *noop_recv[10];
-  sprintf(noop_recv, (char *)data);
-}
-
 
 int CheckEraseData(int acc,int targetNo,char *mptr,char *mapEnd,char *code)
 {
@@ -916,7 +867,7 @@ int	ret;
 		ret=GetOneFile(acc,targetNo,code,path,atol(stime));
 	}
 	else if(st.st_size!=atoll(ssize)){
-		Syslog(LOG_INFO,"SyncOneFolder_F:%s:st.st_size(%d)!=size(%lld):Get\n",fullpath,st.st_size,atoll(ssize));
+		Syslog(LOG_INFO,"SyncOneFolder_F:%s:st.st_size(%d)!=size(%llu):Get\n",fullpath,st.st_size,atoll(ssize));
 		ret=GetOneFile(acc,targetNo,code,path,atol(stime));
 	}
 	else if(st.st_mtime<atol(stime)){
@@ -937,7 +888,7 @@ int GetOneFile(int acc,int targetNo,char *code,char *path,unsigned long timestam
 {
 char	*buf,*buf2,*data,*ptr;
 TOKEN	token;
-long long	size,lestSize,recvSize,len,dataSize;
+unsigned long long	size,lestSize,recvSize,len,dataSize;
 char	*fullpath;
 int	fd;
 int	lf;
@@ -1022,7 +973,7 @@ struct utimbuf	ut;
 				return(-1);
 			}
 			size=atoll(token.token[2]);
-			Syslog(LOG_DEBUG,"GetOneFile:size=%lld\n",size);
+			Syslog(LOG_DEBUG,"GetOneFile:size=%llu\n",size);
 
 			if(size<0){
 				Syslog(LOG_ERR,"GetOneFile:size<0:unlink\n");
@@ -1135,12 +1086,4 @@ int	len,i,c;
 	}
 
 	return(0);
-}
-
-// added
-void *ipc_listen(void *arg) {
-  while(1) {
-    //Syslog(LOG_DEBUG,"IPC_LISTEN\n");
-    IPC_listenWait(10);
-  }
 }

@@ -17,6 +17,7 @@
 #include    <sys/stat.h>
 #include    <dirent.h>
 #include    <pthread.h>
+#include    <ipc.h>  // added
 #include    "sock.h"
 #include    "token.h"
 #include    "jconv.h"
@@ -64,6 +65,9 @@ int SendToRemote(int acc,char *data);
 int CleanFilename(char *name);
 int MakeDirectory(char *path);
 
+// added
+void *ipc_listen(void *arg);
+void NoopHandler(MSG_INSTANCE ref, void *data, void *dummy);
 
 void ending(int sig)
 {
@@ -82,6 +86,22 @@ int main(int argc,char *argv[])
 int	ret;
 time_t	now,beforeTime=0;
 int	i;
+
+	// added
+	/* Connect to Central Server */
+	IPC_connect("wlSyncS");
+
+	// added
+	/* Define Message */
+	IPC_defineMsg("NOOP", IPC_VARIABLE_LENGTH, "[char: 10]");
+	IPC_subscribeData("NOOP", NoopHandler, NULL);
+
+        // added
+        /* Create a thread for IPC_listen*/
+        pthread_t thread_listen;
+	char *message = "Thread for IPC_listen";
+	pthread_create(&thread_listen, NULL, ipc_listen, (void*) message);
+
 
 	for(i=1;i<argc;i++){
 		if(strcmp(argv[i],"-d")==0){
@@ -340,6 +360,7 @@ void *WorkThread(void *arg)
 {
 int	no=(int)arg;
 char	*buf;
+ char    noop[10];  // added
 TOKEN	token;
 
 	Syslog(LOG_DEBUG,"WorkThread:%d:start\n",no);
@@ -374,6 +395,9 @@ TOKEN	token;
 	free(buf);
 
 	while(1){
+   	        // added
+	        Syslog(LOG_INFO, "ROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOP\n");
+	        
 		if(RecvOneLine_2(ThreadStatus[no].soc,&buf,0)<=0){
 			Syslog(LOG_INFO,"WorkThread:RecvOneLine_2:error or closed\n");
 			break;
@@ -409,6 +433,13 @@ TOKEN	token;
 	Syslog(LOG_DEBUG,"WorkThread:%d:end\n",no);
 
 	return(0);
+}
+
+// added
+void NoopHandler(MSG_INSTANCE ref, void *data, void *dummy) {
+  char noop_recv[10];
+  sprintf(noop_recv, (char *)data);
+  Syslog(LOG_DEBUG,"NoopHandler:%s\n", noop_recv);
 }
 
 int SendOneData(int soc,char *name,char *path)
@@ -545,4 +576,10 @@ char	*ptr,*p;
 	return(0);
 }
 
-
+// added
+void *ipc_listen(void *arg) {
+  while(1) {
+    Syslog(LOG_DEBUG, "IPC_LISTEN\n");
+    IPC_listenWait(10);
+  }
+}

@@ -18,7 +18,6 @@
 #include    <dirent.h>
 #include    <utime.h>
 #include    <pthread.h>
-#include    <ipc.h>  // added
 #include    "sock.h"
 #include    "token.h"
 #include    "jconv.h"
@@ -75,10 +74,6 @@ int SyncOneFolder_F(int acc,int targetNo,char *code,char *stime,char *ssize,char
 int GetOneFile(int acc,int targetNo,char *code,char *path,unsigned long timestamp);
 int CleanFilename(char *name);
 
-// added
-void *ipc_listen(void *arg);
-void NoopHandler(MSG_INSTANCE ref, void *data, void *dummy);
-
 void ending(int sig)
 {
 	SigEnd=sig;
@@ -95,25 +90,6 @@ int main(int argc,char *argv[])
 {
 int	s[SOCK_NO];
 int	s_no,ret,i;
-
-// added
-char noop[10];
-
-        // added
-        /* Connect to Central Server */
-        IPC_connect("wlSyncC"); 
-
-	// added
-	/* Define Message */
-	IPC_defineMsg("NOOP", IPC_VARIABLE_LENGTH, "[char: 10]");
-	//	IPC_subscribeData("NOOP", NoopHandler, NULL);
-
-        // added
-        /* Create a thread for IPC_listen */
-        pthread_t thread_listen;
-	char *message = "Thread for IPC_listen";
-	pthread_create(&thread_listen, NULL, ipc_listen, (void*) message);  // 第4引数は必須 or not??
-
 
 	if(argc>1&&strcmp(argv[1],"-d")==0){
 		daemon(1,0);
@@ -161,10 +137,6 @@ char noop[10];
 	for(i=0;i<s_no;i++){
 		close(s[i]);
 	}
-
-	// added
-	IPC_disconnect();
-	pthread_join(thread_listen, NULL);
 
 	return(0);
 }
@@ -222,12 +194,6 @@ int	i,nready;
 	}
 
 	while(1){
-	  // added
-	  char noop[10];
-	  // added
-	  // Send Noop
-	  sprintf(noop, "#Noop");
-	  IPC_publishData("NOOP", noop);
 		if(SigEnd){
 			endingFunc(SigEnd);
 			SigEnd=0;
@@ -510,13 +476,6 @@ char	*buf;
 	Syslog(LOG_INFO,"SendKeepAlive:Send \"#Noop\"\n");
 
 	SendToRemote(acc,"#Noop\r\n");
-
-	// added
-	// Send Noop
-	//char noop[10];
-	//sprintf(noop, "#Noop");
-	//IPC_publishData("NOOP", noop);
-
 	if(RecvOneLine_2(acc,&buf,0)<=0){
 		Syslog(LOG_ERR,"SendKeepAlive:RecvOneLine_2:error or closed\n");
 		return(-1);
@@ -534,13 +493,6 @@ char	*buf;
 		return(0);
 	}
 }
-
-// added
-void NoopHandler(MSG_INSTANCE ref, void *data, void *dummy) {
-  char *noop_recv[10];
-  sprintf(noop_recv, (char *)data);
-}
-
 
 int CheckEraseData(int acc,int targetNo,char *mptr,char *mapEnd,char *code)
 {
@@ -1135,12 +1087,4 @@ int	len,i,c;
 	}
 
 	return(0);
-}
-
-// added
-void *ipc_listen(void *arg) {
-  while(1) {
-    //Syslog(LOG_DEBUG,"IPC_LISTEN\n");
-    IPC_listenWait(10);
-  }
 }
