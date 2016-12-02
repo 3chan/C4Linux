@@ -1,0 +1,7 @@
+16.12.01 wrote by Haruka Saegusa (s1511437@u.tsukuba.ac.jp)
+
+.	       	  	 : Segmentation Fault
+/chap11_sync.tar.gz 	 : Run but not stable
+/wlsync.tar.gz		 : Original sample code
+
+../../ipc		 : IPC library
