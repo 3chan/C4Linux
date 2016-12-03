@@ -1,4 +1,5 @@
-#define MAX01   10
+//#define MAX01   10
+#define MAX01   65
 #define MAX02   20
 
 

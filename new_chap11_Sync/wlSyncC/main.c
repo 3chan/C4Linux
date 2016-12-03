@@ -103,6 +103,11 @@ static void     *etc(void *arg);
 void            hoge02Handler(MSG_INSTANCE ref, void *data, void *dummy);
 void            sigcatch(int sig);
 
+/* added [by me] */
+bool		g_flag_observe;
+pthread_t	g_ipc_observe_thread;
+static void	*ipc_observe(void *arg);
+
 
 void ending(int sig)
 {
@@ -151,6 +156,13 @@ fprintf(stderr, "fprintf teeeeeeeeeeeest\n");
 
  /**  end  added [IPC] **/
  
+
+ /* added [by me] */
+ g_flag_observe = true;
+ if (pthread_create(&g_ipc_observe_thread, NULL, &ipc_observe, NULL) != 0)
+   perror("pthread_create(): observe\n");
+
+
 
 
 	if(argc>1&&strcmp(argv[1],"-d")==0){
@@ -201,30 +213,6 @@ fprintf(stderr, "fprintf teeeeeeeeeeeest\n");
 	}
 
 
- /* added [Start IPC listening and publishing threads] */
- g_flag_listen  = true;
- g_flag_publish = true;
- g_flag_etc = true;
- if (pthread_create(&g_ipc_listen_thread, NULL, &ipc_listen, NULL) != 0)
-   perror("pthread_create()\n");
- usleep(300*1000);
- char str[256];
- char *pstr;
- sprintf(str, "Hello world!!");
- pstr = str;
- while (g_flag_publish == true &&
-	g_flag_listen  == true &&
-	g_flag_etc == true) {
-   pthread_mutex_lock(&g_mutex_ipc);
-   printf("ok01\n");
-   IPC_publishData(HOGE01_MSG, &g_hoge01);
-   printf("ok02: %s\n", str);
-   IPC_publishData(STRING_MSG, &pstr);
-   printf("ok03\n");
-   pthread_mutex_unlock(&g_mutex_ipc);
-   sleep(1);
- }
-
  /* added [wait thread join] */
  g_flag_publish = false;
  g_flag_listen  = false;
@@ -233,6 +221,10 @@ fprintf(stderr, "fprintf teeeeeeeeeeeest\n");
  pthread_join(g_ipc_listen_thread, NULL);
  pthread_join(g_etc_thread, NULL);
  
+ /* added by me */
+ g_flag_observe = false;
+ pthread_join(g_ipc_observe_thread, NULL);
+
  /* added [Close IPC] */
  ipc_close();
  pthread_mutex_destroy(&g_mutex_ipc);
@@ -1274,6 +1266,10 @@ void sigcatch(int sig)
   pthread_join(g_ipc_listen_thread, NULL);
   pthread_join(g_etc_thread, NULL);
 
+  /* added [by me] */
+  g_flag_observe = false;
+  pthread_join(g_ipc_observe_thread, NULL);
+
   /* Close IPC */
   ipc_close();
 
@@ -1294,4 +1290,39 @@ void hoge02Handler(MSG_INSTANCE ref, void *data, void *dummy)
   for (i=0; i<g_hoge02.d; i++) {
     printf("g_hoge02.f[%d] = %lf\n", i, g_hoge02.f[i]);
   }
+}
+
+
+static void *ipc_observe(void *arg)
+{
+  static long i = 0;
+
+  fprintf(stderr, "Start ipc_observe\n");
+
+  /* added [Start IPC listening and publishing threads] */
+  g_flag_listen  = true;
+  g_flag_publish = true;
+  g_flag_etc = true;
+  if (pthread_create(&g_ipc_listen_thread, NULL, &ipc_listen, NULL) != 0)
+    perror("pthread_create()\n");
+  usleep(300*1000);
+
+  char str[256];
+  char *pstr;
+  sprintf(str, "Hello world!!");
+  pstr = str;
+  while (g_flag_publish == true &&
+	 g_flag_listen  == true &&
+	 g_flag_etc == true     &&
+	 g_flag_observe == true) {  // added by me
+    pthread_mutex_lock(&g_mutex_ipc);
+    printf("ok01\n");
+    IPC_publishData(HOGE01_MSG, &g_hoge01);
+    printf("ok02: %s\n", str);
+    IPC_publishData(STRING_MSG, &pstr);
+    printf("ok03\n");
+    pthread_mutex_unlock(&g_mutex_ipc);
+    sleep(1);
+  }
+  //fprintf(stderr, "Stop ipc_observe\n");                                   
 }

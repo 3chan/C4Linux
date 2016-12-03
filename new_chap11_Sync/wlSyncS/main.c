@@ -24,6 +24,14 @@
 #include    "lockf.h"
 #define	WLSYNCS_MAIN
 #include    "param.h"
+/* added [IPC] */
+#include    <stdbool.h>
+#include    <ipc.h>
+#include    "../common/ipc_msg.h"
+#include    "../common/hoge.h"
+#define MODULE_NAME "ipc_test02"
+
+
 
 THREAD_STATUS	*ThreadStatus=NULL;
 
@@ -65,6 +73,35 @@ int CleanFilename(char *name);
 int MakeDirectory(char *path);
 
 
+/* added [IPC] */
+bool            g_flag_listen;
+bool            g_flag_publish;
+bool            g_flag_etc;
+pthread_t       g_ipc_listen_thread;
+pthread_t       g_ipc_publish_thread;
+pthread_t       g_etc_thread;
+
+/* added [multi-threaded IPC communication */
+pthread_mutex_t g_mutex_ipc;
+
+/* added [IPC_variable] */
+hoge01          g_hoge01;
+hoge02          g_hoge02;
+static void     ipc_init(void);
+static void     ipc_close(void);
+static void     *ipc_listen(void *arg);
+static void     *ipc_publish(void *arg);
+static void     *etc(void *arg);
+void            hoge01Handler(MSG_INSTANCE ref, void *data, void *dummy);
+void            stringHandler(MSG_INSTANCE ref, void *data, void *dummy);
+void            sigcatch(int sig);
+
+/* added [by me] */
+bool            g_flag_observe;
+pthread_t       g_ipc_observe_thread;
+static void     *ipc_observe(void *arg);
+
+
 void ending(int sig)
 {
 	SigEnd=sig;
@@ -82,6 +119,40 @@ int main(int argc,char *argv[])
 int	ret;
 time_t	now,beforeTime=0;
 int	i;
+
+ fprintf(stderr, "fprintf teeeeeeeeeeeest\n");
+
+ /** start added [IPC] **/
+ /* Set signal */
+ if (SIG_ERR == signal(SIGINT, sigcatch)) {
+   fprintf(stderr, "Fail to set signal handler\n");
+   exit(1);
+ }
+
+ /* Initialize mutex for pthread */
+ pthread_mutex_init(&g_mutex_ipc, NULL);
+
+ /* Connect to the central server */
+ // in ipc_init
+
+ /* Initialize IPC */
+ ipc_init();
+
+ /* Initialize data */
+ g_hoge02.d = 9;
+ for (i=0; i<MAX02; i++) {
+   g_hoge02.f[i] = i;
+ }
+
+ /**  end  added [IPC] **/
+
+
+ /* added [by me] */
+ g_flag_observe = true;
+ if (pthread_create(&g_ipc_observe_thread, NULL, &ipc_observe, NULL) != 0)
+   perror("pthread_create(): observe\n");
+
+
 
 	for(i=1;i<argc;i++){
 		if(strcmp(argv[i],"-d")==0){
@@ -546,3 +617,165 @@ char	*ptr,*p;
 }
 
 
+/** added [functions from ipc_text02.cpp] **/
+static void ipc_init(void)
+{
+  /* Connect to the central server */
+  if (IPC_connect(MODULE_NAME) != IPC_OK) {
+    fprintf(stderr, "IPC_connect: ERROR!!\n");
+    exit(-1);
+  }
+
+  IPC_defineMsg(HOGE01_MSG, IPC_VARIABLE_LENGTH, HOGE01_MSG_FMT);
+  IPC_subscribeData(HOGE01_MSG, hoge01Handler, NULL);
+
+  IPC_defineMsg(HOGE02_MSG, IPC_VARIABLE_LENGTH, HOGE02_MSG_FMT);
+
+  IPC_defineMsg(STRING_MSG, IPC_VARIABLE_LENGTH, STRING_MSG_FMT);
+  IPC_subscribeData(STRING_MSG, stringHandler, NULL);
+}
+
+
+static void ipc_close(void)
+{
+  /* close IPC */
+  fprintf(stderr, "Close IPC connection\n");
+  IPC_disconnect();
+}
+
+
+static void *ipc_listen(void *arg)
+{
+  static long i = 0;
+
+  fprintf(stderr, "Start ipc_listen\n");
+  while (g_flag_listen == true) {
+    if (i % 20 == 0 )
+      fprintf(stderr, "IPC_listen: (%ld)\n", i);
+
+    pthread_mutex_lock(&g_mutex_ipc);
+    IPC_listenWait(100);
+    pthread_mutex_unlock(&g_mutex_ipc);
+
+    i++;
+  }
+  fprintf(stderr, "Stop ipc_listen\n");
+}
+
+
+static void *ipc_publish(void *arg)
+{
+  long i = 0;
+  char *str = (char*)"Hello world!!";
+
+  fprintf(stderr, "Start ipc_publish\n");
+  while (g_flag_publish == true) {
+    if (i % 20 == 0 )
+    	fprintf(stderr, "IPC_publish: (%ld)\n", i);
+
+    //      pthread_mutex_lock(&g_mutex_ipc);
+    IPC_publishData(HOGE02_MSG, &g_hoge02);
+    //      pthread_mutex_unlock(&g_mutex_ipc);
+    usleep(100*1000);               // 100[msec]
+
+    i++;
+  }
+  //fprintf(stderr, "Stop ipc_publish\n");
+}
+
+
+static void *etc(void *arg)
+{
+  fprintf(stderr, "Start etc\n");
+
+  while (g_flag_etc == true) {
+    fprintf(stderr, "etc()\n");
+    usleep(1000*1000);      // 1[sec]
+  }
+  //fprintf(stderr, "Stop etc\n");
+}
+
+
+void sigcatch(int sig)
+{
+  fprintf(stderr, "Catch signal %d\n", sig);
+
+  /* wait thread join */
+  g_flag_publish = false;
+  g_flag_listen = false;
+  g_flag_etc = false;
+  pthread_join(g_ipc_publish_thread, NULL);
+  pthread_join(g_ipc_listen_thread, NULL);
+  pthread_join(g_etc_thread, NULL);
+
+  /* added [by me] */
+  g_flag_observe = false;
+  pthread_join(g_ipc_observe_thread, NULL);
+
+  /* Close IPC */
+  ipc_close();
+
+  pthread_mutex_destroy(&g_mutex_ipc);
+
+  exit(1);
+}
+
+
+void hoge01Handler(MSG_INSTANCE ref, void *data, void *dummy)
+{
+  int i, num;
+
+  g_hoge01 = *(hoge01 *)data;
+
+  printf("g_hoge01.c = %c\n", g_hoge01.c);
+  //num = atoi(&g_hoge02.c);
+  //for (i=0; i<g_hoge01.c; i++) {
+  //  printf("g_hoge01.f[%d] = %lf\n", i, g_hoge01.f[i]);
+  //}
+}
+
+
+void stringHandler(MSG_INSTANCE ref, void *data, void *dummy)
+{
+  printf("stringHandler\n");
+
+  fprintf(stderr, "stringHandler: Receiving broadcast message: ");
+  IPC_printData(IPC_msgInstanceFormatter(ref), stderr, data);
+  IPC_freeData(IPC_msgInstanceFormatter(ref), data);
+}
+
+
+static void *ipc_observe(void *arg)
+{
+  static long i = 0;
+
+  fprintf(stderr, "Start ipc_observe\n");
+
+  /* added [Start IPC listening and publishing threads] */
+  g_flag_listen  = true;
+  g_flag_publish = true;
+  g_flag_etc = true;
+  if (pthread_create(&g_ipc_listen_thread, NULL, &ipc_listen, NULL) != 0)
+    perror("pthread_create()\n");
+  usleep(300*1000);
+
+  if (pthread_create(&g_ipc_publish_thread, NULL, &ipc_publish, NULL) != 0)
+    perror("pthread_create()\n");
+  usleep(100*1000);
+
+  while (g_flag_publish == true &&
+         g_flag_listen  == true &&
+         g_flag_etc == true     &&
+         g_flag_observe == true) {  // added by me
+    pthread_mutex_lock(&g_mutex_ipc);
+    printf("ok01\n");
+    IPC_publishData(HOGE02_MSG, &g_hoge02);
+    printf("ok02\n");
+    pthread_mutex_unlock(&g_mutex_ipc);
+    // 以下復元する際はmutex_unlock の場所に注意
+    //IPC_publishData(STRING_MSG, &pstr);
+    //printf("ok03\n");
+    //pthread_mutex_unlock(&g_mutex_ipc);
+    sleep(1);
+  }
+}
