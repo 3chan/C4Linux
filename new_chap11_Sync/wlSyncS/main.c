@@ -94,6 +94,8 @@ static void     *ipc_publish(void *arg);
 static void     *etc(void *arg);
 void            hoge01Handler(MSG_INSTANCE ref, void *data, void *dummy);
 void            stringHandler(MSG_INSTANCE ref, void *data, void *dummy);
+//void            noopHandler(MSG_INSTANCE ref, void *data, void *dummy);
+void            okHandler(MSG_INSTANCE ref, void *data, void *dummy);
 void            sigcatch(int sig);
 
 /* added [by me] */
@@ -201,8 +203,7 @@ int	i;
 		while(1){
 			if(SigEnd){
 				endingFunc(SigEnd);
-				SigEnd=0;
-			}
+				SigEnd=0;			}
 			if(ThreadNotExistCheck(0)){
 				break;
 			}
@@ -423,8 +424,28 @@ TOKEN	token;
 		return((void *)-1);
 	}
 
+	// ac: ディレクトリリスト送信部 (実際送信するデータは MapPtr と MapSize)
+	// ac: int ThreadStatus[no].soc == socket discriptor
+	// ac: Sendsize() は send() を使うための関数 (sock.c内に定義)
 	SendSize(ThreadStatus[no].soc,MapPtr,MapSize);
 
+	/* added by me [send directory-list] */
+	// ac: ソケットディスクリプタ送信
+	pthread_mutex_lock(&g_mutex_ipc);
+	//printf("ok01\n");
+	printf("ThreadStatus[%d].soc = %d\n", no, ThreadStatus[no].soc);
+	IPC_publishData(SOC_MSG, &(ThreadStatus[no].soc));
+	usleep(100*1000);
+	//printf("ok02\n");
+	pthread_mutex_unlock(&g_mutex_ipc);
+	// ac: ディレクトリリスト送信
+	pthread_mutex_lock(&g_mutex_ipc);
+	//printf("ok03\n");
+	printf("publish dirlist\n");
+	IPC_publishData(DIRLIST_MSG, &MapPtr);
+	usleep(100*1000);
+	//printf("ok04\n");
+	pthread_mutex_unlock(&g_mutex_ipc);
 	ThreadStatus[no].status=2;
 
 	if(RecvOneLine_2(ThreadStatus[no].soc,&buf,0)<=0){
@@ -633,6 +654,17 @@ static void ipc_init(void)
 
   IPC_defineMsg(STRING_MSG, IPC_VARIABLE_LENGTH, STRING_MSG_FMT);
   IPC_subscribeData(STRING_MSG, stringHandler, NULL);
+
+  /* added by me */
+  IPC_defineMsg(SOC_MSG, IPC_VARIABLE_LENGTH, SOC_MSG_FMT);  
+
+  IPC_defineMsg(DIRLIST_MSG, IPC_VARIABLE_LENGTH, DIRLIST_MSG_FMT);  
+
+  IPC_defineMsg(OK_MSG, IPC_VARIABLE_LENGTH, OK_MSG_FMT);  
+  IPC_subscribeData(OK_MSG, okHandler, NULL);
+
+  IPC_defineMsg(NOOP_MSG, IPC_VARIABLE_LENGTH, NOOP_MSG_FMT);  
+  //IPC_subscribeData(NOOP_MSG, noopHandler, NULL);
 }
 
 
@@ -673,10 +705,14 @@ static void *ipc_publish(void *arg)
     if (i % 20 == 0 )
     	fprintf(stderr, "IPC_publish: (%ld)\n", i);
 
-    //      pthread_mutex_lock(&g_mutex_ipc);
+    printf("ok10\n");
+    //pthread_mutex_lock(&g_mutex_ipc);
+    printf("ok11\n");
     IPC_publishData(HOGE02_MSG, &g_hoge02);
-    //      pthread_mutex_unlock(&g_mutex_ipc);
+    printf("ok12\n");
+    //pthread_mutex_unlock(&g_mutex_ipc);
     usleep(100*1000);               // 100[msec]
+    printf("ok13\n");
 
     i++;
   }
@@ -745,6 +781,15 @@ void stringHandler(MSG_INSTANCE ref, void *data, void *dummy)
 }
 
 
+void okHandler(MSG_INSTANCE ref, void *data, void *dummy) {
+  printf("ooooooooooooooookkkkkkkkkkk\n");
+  fprintf(stderr, "Receiving: ");
+  IPC_printData(IPC_msgInstanceFormatter(ref), stderr, data);
+  IPC_freeData(IPC_msgInstanceFormatter(ref), data);
+
+}
+
+
 static void *ipc_observe(void *arg)
 {
   static long i = 0;
@@ -755,6 +800,7 @@ static void *ipc_observe(void *arg)
   g_flag_listen  = true;
   g_flag_publish = true;
   g_flag_etc = true;
+
   if (pthread_create(&g_ipc_listen_thread, NULL, &ipc_listen, NULL) != 0)
     perror("pthread_create()\n");
   usleep(300*1000);
@@ -762,20 +808,4 @@ static void *ipc_observe(void *arg)
   if (pthread_create(&g_ipc_publish_thread, NULL, &ipc_publish, NULL) != 0)
     perror("pthread_create()\n");
   usleep(100*1000);
-
-  while (g_flag_publish == true &&
-         g_flag_listen  == true &&
-         g_flag_etc == true     &&
-         g_flag_observe == true) {  // added by me
-    pthread_mutex_lock(&g_mutex_ipc);
-    printf("ok01\n");
-    IPC_publishData(HOGE02_MSG, &g_hoge02);
-    printf("ok02\n");
-    pthread_mutex_unlock(&g_mutex_ipc);
-    // 以下復元する際はmutex_unlock の場所に注意
-    //IPC_publishData(STRING_MSG, &pstr);
-    //printf("ok03\n");
-    //pthread_mutex_unlock(&g_mutex_ipc);
-    sleep(1);
-  }
 }

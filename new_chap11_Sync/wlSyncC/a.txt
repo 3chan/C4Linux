@@ -1,0 +1,59 @@
+fprintf teeeeeeeeeeeest
+Warning: CENTRALHOST environment variable not set.
+Warning: trying to connect to local host unix02.
+... IPC Connected on port 1381
+Start ipc_observe
+Start ipc_listen
+IPC_listen: (0)
+<139944532514560>2016/12/05 13:04:50:INFO:ParamLogOut:VERSION_STRING=1.0.0
+<139944532514560>2016/12/05 13:04:50:INFO:ParamLogOut:TargetFolderCnt=1
+<139944532514560>2016/12/05 13:04:50:INFO:ParamLogOut:TargetFolder0=wlSyncTest,./RecvData/
+<139944532514560>2016/12/05 13:04:50:INFO:ParamLogOut:Port=56000
+<139944532514560>2016/12/05 13:04:50:INFO:ParamLogOut:RecvTimeout=5
+<139944532514560>2016/12/05 13:04:50:INFO:ParamLogOut:UseDigest=0
+<139944532514560>2016/12/05 13:04:50:INFO:ParamLogOut:LogPath=./
+<139944532514560>2016/12/05 13:04:50:INFO:ParamLogOut:LogLevel=7
+<139944532514560>2016/12/05 13:04:50:INFO:ParamLogOut:StderrOut=1
+<139944532514560>2016/12/05 13:04:50:INFO:ParamLogOut:VersionFilePath=./wlSyncC.ver
+<139944532514560>2016/12/05 13:04:50:INFO:ParamLogOut:WorkFilePath=./wlSyncC.work
+<139944532514560>2016/12/05 13:04:50:INFO:ParamLogOut:DeleteFlag=1
+<139944532514560>2016/12/05 13:04:50:INFO:sock2.c:ServerSocketNew:listen to 0.0.0.0 56000
+<139944532514560>2016/12/05 13:04:50:INFO:sock2.c:ServerSocketNew:listen to :: 56000
+<139944532514560>2016/12/05 13:04:50:DEBUG:MakeVersionFile:./wlSyncC.ver
+<139944532514560>2016/12/05 13:04:50:INFO:main:wlSyncC:ready
+<139944532514560>2016/12/05 13:04:50:DEBUG:AcceptLoop:s_no=2
+Start ipc_publish
+IPC_publish: (0)
+<139944532514560>2016/12/05 13:04:51:INFO:AcceptLoop:accept(0):130.158.64.37:43764
+<139944532514560>2016/12/05 13:04:51:INFO:AcceptLoop:pthread_create:thread_id=1579706112
+<139944499111680>2016/12/05 13:04:51:INFO:RecvLoop:start:acc=7
+len=21,size=1025,limit=1048577
+<139944499111680>2016/12/05 13:04:51:DEBUG:RecvLoop:RecvOneLine_2:#Name=wlSyncTest,EUC
+<139944499111680>2016/12/05 13:04:51:INFO:CheckRecvData:td.acc=7,data=#Name=wlSyncTest,EUC
+<139944499111680>2016/12/05 13:04:51:INFO:DoName:workfile=./wlSyncC.work/0139944499111680
+len=27,size=1025,limit=1048577
+<139944499111680>2016/12/05 13:04:51:DEBUG:DoName:RecvOneLine_2:F:1480753349,8,0,file2.txt
+len=5,size=1025,limit=1048577
+<139944499111680>2016/12/05 13:04:51:INFO:DoName:RecvOneLine_2:#End
+<139944499111680>2016/12/05 13:04:51:DEBUG:SendToRemote:acc=7,data=#OK
+
+<139944499111680>2016/12/05 13:04:51:DEBUG:SyncData:acc=7
+<139944499111680>2016/12/05 13:04:51:DEBUG:CheckEraseData:targetNo=0,mptr=60284014,mapEnd=60284035,code=EUC
+<139944499111680>2016/12/05 13:04:51:INFO:CheckEraseOneFolder:tpath=./RecvData/,path=,mptr=60284014,tend=60284030,code=EUC
+<139944499111680>2016/12/05 13:04:51:INFO:CheckEraseOneFolder:fullpath=./RecvData/file2.txt
+<139944499111680>2016/12/05 13:04:51:DEBUG:SearchOne:d_f=F,spath=file2.txt,mptr=60284014,tend=60284030,code=EUC
+<139944499111680>2016/12/05 13:04:51:DEBUG:SearchOne:spath=file2.txt
+<139944499111680>2016/12/05 13:04:51:DEBUG:SearchOne:file2.txt:file2.txt
+<139944499111680>2016/12/05 13:04:51:DEBUG:SearchOne:F,file2.txt:1
+<139944499111680>2016/12/05 13:04:51:ERR:SyncOneFolder:acc=7,targetNo=0,code=EUC,*mptr=60284014,mapEnd=60284035
+<139944499111680>2016/12/05 13:04:51:DEBUG:MakeTargetFolder:targetNo=0
+<139944499111680>2016/12/05 13:04:51:DEBUG:SyncOneFolder:F:1480753349,8,0,file2.txt
+<139944499111680>2016/12/05 13:04:51:DEBUG:SyncOneFolder_F:acc=7,targetNo=0,code=EUC,stime=1480753349,ssize=8,sdigest=0,path=file2.txt
+<139944499111680>2016/12/05 13:04:51:DEBUG:SyncOneFolder_F:./RecvData//file2.txt
+<139944499111680>2016/12/05 13:04:51:INFO:SyncOneFolder_F:./RecvData//file2.txt:exists
+<139944499111680>2016/12/05 13:04:51:ERR:SyncOneFolder:normal end
+<139944499111680>2016/12/05 13:04:51:INFO:RecvLoop:end
+dirlistHandler: Receiving broadcast message: "#Name=wlSyncTest,EUC
+F:1480753349,8,0,file2.txt
+#End
+"

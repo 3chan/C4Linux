@@ -15,10 +15,21 @@
 
 
 /* wlSync */
-#define NOOP_MSG		"noop_msg"
+#define SOC_MSG			"soc"
+
+#define SOC_MSG_FMT		"int"
+
+#define DIRLIST_MSG    		"dir_list"
+
+#define DIRLIST_MSG_FMT		"string"
+
+#define OK_MSG			"ok"
+
+#define OK_MSG_FMT		"string"
+
+#define NOOP_MSG		"noop"
 
 #define NOOP_MSG_FMT		"string"
-
 
 #endif /* IPC_MSG_H */
 

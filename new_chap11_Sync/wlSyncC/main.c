@@ -101,6 +101,10 @@ static void     *ipc_listen(void *arg);
 static void     *ipc_publish(void *arg);
 static void     *etc(void *arg);
 void            hoge02Handler(MSG_INSTANCE ref, void *data, void *dummy);
+void            socHandler(MSG_INSTANCE ref, void *data, void *dummy);
+//void            dirlistHandler(MSG_INSTANCE ref, void *data, void *dummy);
+void		dirlistHandler(MSG_INSTANCE ref, BYTE_ARRAY data, void *dummy);
+//void		okHandler(MSG_INSTANCE ref, BYTE_ARRAY data, void *dummy);
 void            sigcatch(int sig);
 
 /* added [by me] */
@@ -343,6 +347,9 @@ char	*buf;
 
 	Syslog(LOG_INFO,"RecvLoop:start:acc=%d\n",td.acc);
 
+	// ac: ディレクトリリスト受信部
+	// ac: int td.acc == Accepted socket discriptor
+	// ac: RecvOneLine_2() は根本的には recv() を使うための関数
 	while(1){
 		if(RecvOneLine_2(td.acc,&buf,0)<=0){
 			Syslog(LOG_ERR,"RecvLoop:RecvOneLine_2:error or closed\n");
@@ -1184,12 +1191,24 @@ int	len,i,c;
 /** added [functions from ipc_text01.cpp] **/
 static void ipc_init(void)
 {
-  IPC_defineMsg(STRING_MSG, IPC_VARIABLE_LENGTH, STRING_MSG_FMT);
-
   IPC_defineMsg(HOGE01_MSG, IPC_VARIABLE_LENGTH, HOGE01_MSG_FMT);
 
   IPC_defineMsg(HOGE02_MSG, IPC_VARIABLE_LENGTH, HOGE02_MSG_FMT);
   IPC_subscribeData(HOGE02_MSG, hoge02Handler, NULL);
+
+  IPC_defineMsg(STRING_MSG, IPC_VARIABLE_LENGTH, STRING_MSG_FMT);
+
+  /* added by me */
+  IPC_defineMsg(SOC_MSG, IPC_VARIABLE_LENGTH, SOC_MSG_FMT);
+  IPC_subscribeData(SOC_MSG, socHandler, NULL);
+
+  IPC_defineMsg(DIRLIST_MSG, IPC_VARIABLE_LENGTH, DIRLIST_MSG_FMT);
+  IPC_subscribeData(DIRLIST_MSG, dirlistHandler, NULL);
+
+  IPC_defineMsg(OK_MSG, IPC_VARIABLE_LENGTH, OK_MSG_FMT);
+  //IPC_subscribeData(OK_MSG, okHandler, NULL);
+
+  IPC_defineMsg(NOOP_MSG, IPC_VARIABLE_LENGTH, NOOP_MSG_FMT);
 }
 
 
@@ -1227,13 +1246,21 @@ static void *ipc_publish(void *arg)
 
   fprintf(stderr, "Start ipc_publish\n");
   while (g_flag_publish == true) {
-    //      if (i % 20 == 0 )                                                       
-    fprintf(stderr, "IPC_publish: (%ld)\n", i);
+    if (i % 20 == 0 )                                                       
+      fprintf(stderr, "IPC_publish: (%ld)\n", i);
 
-    //      pthread_mutex_lock(&g_mutex_ipc);                                       
+    pthread_mutex_lock(&g_mutex_ipc);                                       
+    printf("ok01\n");
     IPC_publishData(HOGE01_MSG, &g_hoge01);
-    IPC_publishData(STRING_MSG, str);
-    //      pthread_mutex_unlock(&g_mutex_ipc);                                     
+    printf("ok02\n");
+    pthread_mutex_unlock(&g_mutex_ipc);                                     
+    usleep(100*1000);               // 100[msec]                            
+    pthread_mutex_lock(&g_mutex_ipc);                                       
+    printf("ok03\n");
+    //IPC_publishData(STRING_MSG, str);
+    IPC_publishData(STRING_MSG, &str);
+    printf("ok04\n");
+    pthread_mutex_unlock(&g_mutex_ipc);                                     
     usleep(100*1000);               // 100[msec]                            
 
     i++;
@@ -1293,6 +1320,71 @@ void hoge02Handler(MSG_INSTANCE ref, void *data, void *dummy)
 }
 
 
+void socHandler(MSG_INSTANCE ref, void *data, void *dummy)
+{
+  int  num;
+
+  num = *(int *)data;
+
+  printf("soooooooooooc = %d\n", num);
+
+  // ac: CheckRecvData()を呼び出して内部変数に受け取った変数を引き継ぐ
+  // ac: ...には 構造体で受け取った方が都合のよさ
+
+}
+
+void dirlistHandler(MSG_INSTANCE ref, BYTE_ARRAY data, void *dummy)
+//void dirlistHandler(MSG_INSTANCE ref, void *data, void *dummy)
+{
+  // ac: demo
+  char str[10];
+  char *pstr;
+  sprintf(str, "#OK");
+  pstr = str;
+
+  //char **strPtr;
+  printf("dirlistHandler\n");
+
+  //fprintf(stderr, "dirlistHandler: Receiving broadcast message: ");
+
+  // ac: demo
+  fprintf(stderr, "Receiving: ");
+
+  IPC_printData(IPC_msgInstanceFormatter(ref), stderr, data);
+  IPC_freeData(IPC_msgInstanceFormatter(ref), data);
+
+  /* ipc/ipc-3.9.1/test/priorityTest.c より */
+  // ac: セグフォ
+  //printf("ok10\n");
+  //IPC_unmarshall(IPC_msgInstanceFormatter(ref), data, (void **)(void *)&strPtr);
+  //printf("ok11\n");
+  //printf("dirlistHandler: Receiving %s\n", *strPtr);
+  //printf("ok12\n");
+
+  // free(*strPtr);
+  //free(strPtr);
+
+  // ac: demo
+  printf("ok20\n");
+  //pthread_mutex_lock(&g_mutex_ipc);                                       
+  printf("ok21\n");
+  fprintf(stderr, "Publishing: %s\n", str);
+  printf("ok22\n");
+  IPC_publishData(OK_MSG, &pstr);
+  printf("ok23\n");
+  //pthread_mutex_unlock(&g_mutex_ipc);                                     
+}
+
+/*
+void okHandler(MSG_INSTANCE ref, void *data, void *dummy) {
+  char str[10];
+  
+  sprintf(str, "%s", (char *)data);
+  fprintf(stderr, "Receiving: %s", str);
+}
+*/
+
+
 static void *ipc_observe(void *arg)
 {
   static long i = 0;
@@ -1303,10 +1395,16 @@ static void *ipc_observe(void *arg)
   g_flag_listen  = true;
   g_flag_publish = true;
   g_flag_etc = true;
+
   if (pthread_create(&g_ipc_listen_thread, NULL, &ipc_listen, NULL) != 0)
     perror("pthread_create()\n");
   usleep(300*1000);
 
+  if (pthread_create(&g_ipc_publish_thread, NULL, &ipc_publish, NULL) != 0)
+    perror("pthread_create()\n");
+  usleep(100*1000);
+
+  /*
   char str[256];
   char *pstr;
   sprintf(str, "Hello world!!");
@@ -1324,5 +1422,6 @@ static void *ipc_observe(void *arg)
     pthread_mutex_unlock(&g_mutex_ipc);
     sleep(1);
   }
+  */
   //fprintf(stderr, "Stop ipc_observe\n");                                   
 }
